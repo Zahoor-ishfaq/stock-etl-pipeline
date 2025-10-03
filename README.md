@@ -26,20 +26,18 @@ This project demonstrates a production-ready data engineering pipeline that:
 │ Alpha Vantage   │
 │     API         │
 └────────┬────────┘
-│ Extract (Python)
-▼
+   Extract (Python)
+         ▼
 ┌─────────────────┐
 │   Transform     │
 │    (Pandas)     │
 └────────┬────────┘
-│
-▼
+         ▼
 ┌─────────────────┐      ┌──────────────┐
 │   PostgreSQL    │◄─────┤ Streamlit    │
 │   (Supabase)    │      │  Dashboard   │
 └────────┬────────┘      └──────────────┘
-│
-▼
+         ▼
 ┌─────────────────┐
 │ GitHub Actions  │
 │ (Automation)    │
