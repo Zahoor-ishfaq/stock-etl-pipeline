@@ -160,7 +160,7 @@ if data_source == "Historical Data (Database)":
 else:
     st.markdown("**Source:** Alpha Vantage API (Live/Recent Data)")
     
-    @st.cache_data(ttl=300)  # Cache for 5 minutes
+    @st.cache_data(ttl=300)
     def get_live_data(symbol):
         url = 'https://www.alphavantage.co/query'
         params = {
@@ -195,74 +195,86 @@ else:
         except Exception as e:
             return None, str(e)
     
-    # Stock input
-    st.sidebar.header("Stock Selection")
-    symbol = st.sidebar.text_input("Enter Symbol:", "AAPL").upper()
+    # Get available symbols from database
+    @st.cache_data(ttl=3600)
+    def get_available_symbols():
+        try:
+            engine = get_engine()
+            query = "SELECT DISTINCT symbol FROM stock_data ORDER BY symbol"
+            result = pd.read_sql(query, engine)
+            return result['symbol'].tolist()
+        except:
+            return ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA']  # Fallback list
     
-    if st.sidebar.button("Fetch Live Data") or symbol:
-        with st.spinner(f'Fetching live data for {symbol}...'):
-            df, error = get_live_data(symbol)
-            
-            if error:
-                st.error(f"❌ {error}")
-                st.stop()
-            
-            if df is None or df.empty:
-                st.warning("No data returned")
-                st.stop()
-            
-            # Metrics
-            col1, col2, col3, col4 = st.columns(4)
-            
-            latest = df.iloc[-1]
-            previous = df.iloc[-2] if len(df) > 1 else latest
-            
-            price_change = latest['close'] - previous['close']
-            price_change_pct = (price_change / previous['close']) * 100
-            
-            with col1:
-                st.metric(
-                    "Current Price",
-                    f"${latest['close']:.2f}",
-                    f"{price_change:+.2f} ({price_change_pct:+.2f}%)"
-                )
-            
-            with col2:
-                st.metric("Today's High", f"${latest['high']:.2f}")
-            
-            with col3:
-                st.metric("Today's Low", f"${latest['low']:.2f}")
-            
-            with col4:
-                st.metric("Volume", f"{latest['volume']:,}")
-            
-            # Price chart
-            st.subheader(f"{symbol} Recent Price History (Live)")
-            
-            fig = go.Figure()
-            fig.add_trace(go.Candlestick(
-                x=df['date'],
-                open=df['open'],
-                high=df['high'],
-                low=df['low'],
-                close=df['close'],
-                name=symbol
-            ))
-            fig.update_layout(
-                xaxis_title="Date",
-                yaxis_title="Price (USD)",
-                height=500,
-                xaxis_rangeslider_visible=False
+    # Stock selection
+    st.sidebar.header("Stock Selection")
+    available_symbols = get_available_symbols()
+    selected_symbol = st.sidebar.selectbox("Select Stock:", available_symbols)
+    
+    with st.spinner(f'Fetching live data for {selected_symbol}...'):
+        df, error = get_live_data(selected_symbol)
+        
+        if error:
+            st.error(f"Error: {error}")
+            st.info("Try again in a moment. API may have rate limits.")
+            st.stop()
+        
+        if df is None or df.empty:
+            st.warning("No data returned")
+            st.stop()
+        
+        # Metrics
+        col1, col2, col3, col4 = st.columns(4)
+        
+        latest = df.iloc[-1]
+        previous = df.iloc[-2] if len(df) > 1 else latest
+        
+        price_change = latest['close'] - previous['close']
+        price_change_pct = (price_change / previous['close']) * 100
+        
+        with col1:
+            st.metric(
+                "Current Price",
+                f"${latest['close']:.2f}",
+                f"{price_change:+.2f} ({price_change_pct:+.2f}%)"
             )
-            st.plotly_chart(fig, use_container_width=True)
-            
-            # Raw data
-            with st.expander("📊 View Raw Data"):
-                st.dataframe(df.sort_values('date', ascending=False), use_container_width=True)
-            
-            st.sidebar.info(f"""
-            **Symbol:** {symbol}
-            **Records:** {len(df)}
-            **Latest:** {latest['date'].strftime('%Y-%m-%d')}
-            **Cached for:** 5 minutes
-            """)
+        
+        with col2:
+            st.metric("Today's High", f"${latest['high']:.2f}")
+        
+        with col3:
+            st.metric("Today's Low", f"${latest['low']:.2f}")
+        
+        with col4:
+            st.metric("Volume", f"{latest['volume']:,}")
+        
+        # Price chart
+        st.subheader(f"{selected_symbol} Recent Price History (Live)")
+        
+        fig = go.Figure()
+        fig.add_trace(go.Candlestick(
+            x=df['date'],
+            open=df['open'],
+            high=df['high'],
+            low=df['low'],
+            close=df['close'],
+            name=selected_symbol
+        ))
+        fig.update_layout(
+            xaxis_title="Date",
+            yaxis_title="Price (USD)",
+            height=500,
+            xaxis_rangeslider_visible=False
+        )
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Raw data
+        with st.expander("View Raw Data"):
+            st.dataframe(df.sort_values('date', ascending=False), use_container_width=True)
+        
+        st.sidebar.info(f"""
+        **Symbol:** {selected_symbol}
+        **Records:** {len(df)}
+        **Latest:** {latest['date'].strftime('%Y-%m-%d')}
+        **Cached for:** 5 minutes
+        """)
