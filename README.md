@@ -22,26 +22,34 @@ This project demonstrates a production-ready data engineering pipeline that:
 - Sends email alerts on failures
 
 ## 🏗️ Architecture
+
+```
 ┌─────────────────┐
 │ Alpha Vantage   │
 │     API         │
 └────────┬────────┘
+         │
    Extract (Python)
+         │
          ▼
 ┌─────────────────┐
 │   Transform     │
 │    (Pandas)     │
 └────────┬────────┘
+         │
          ▼
 ┌─────────────────┐      ┌──────────────┐
 │   PostgreSQL    │◄─────┤ Streamlit    │
 │   (Supabase)    │      │  Dashboard   │
 └────────┬────────┘      └──────────────┘
+         │
          ▼
 ┌─────────────────┐
 │ GitHub Actions  │
 │ (Automation)    │
 └─────────────────┘
+```
+
 ## 🚀 Features
 
 - ✅ **Automated Data Extraction** - Fetches daily stock data for multiple symbols
@@ -54,6 +62,8 @@ This project demonstrates a production-ready data engineering pipeline that:
 - ✅ **Rate Limit Management** - Respects API rate limits
 
 ## 📁 Project Structure
+
+```
 stock-etl-pipeline/
 │
 ├── .github/
@@ -61,7 +71,7 @@ stock-etl-pipeline/
 │       └── daily_etl.yml          # GitHub Actions automation
 │
 ├── src/
-│   ├── init.py
+│   ├── __init__.py
 │   ├── etl_pipeline.py            # Main ETL orchestrator
 │   ├── extract.py                 # API data extraction
 │   ├── transform.py               # Data transformation
@@ -76,9 +86,10 @@ stock-etl-pipeline/
 │   └── schema.sql                 # Database schema
 │
 ├── requirements.txt               # Python dependencies
-├── .env                  # Environment variables template
+├── .env.example                   # Environment variables template
 ├── .gitignore
 └── README.md
+```
 
 ## 🛠️ Tech Stack
 
@@ -101,79 +112,78 @@ stock-etl-pipeline/
 - Alpha Vantage API key
 - Gmail account with app password
 
-🔄 ETL Pipeline Details
-Extract
+## 🔄 ETL Pipeline Details
 
-Fetches daily stock data from Alpha Vantage API
-Tracks: AAPL, GOOGL, MSFT, TSLA
-Handles API rate limits (5 requests/minute)
-Returns last 100 days of data per symbol
+### Extract
+- Fetches daily stock data from Alpha Vantage API
+- Tracks: AAPL, GOOGL, MSFT, TSLA
+- Handles API rate limits (5 requests/minute)
+- Returns last 100 days of data per symbol
 
-Transform
+### Transform
+- Converts data types and formats
+- Removes duplicates
+- Calculates derived metrics:
+  - Daily returns
+  - Price ranges
+  - Average prices
+- Handles missing values
 
-Converts data types and formats
-Removes duplicates
-Calculates derived metrics:
+### Load
+- Inserts data into PostgreSQL
+- Implements upsert logic (prevents duplicates)
+- Maintains data integrity with unique constraints
+- Provides detailed logging
 
-Daily returns
-Price ranges
-Average prices
+## 📅 Automation
 
-
-Handles missing values
-
-Load
-
-Inserts data into PostgreSQL
-Implements upsert logic (prevents duplicates)
-Maintains data integrity with unique constraints
-Provides detailed logging
-
-📅 Automation
 The pipeline runs automatically via GitHub Actions:
+- **Schedule:** Daily at 2 PM UTC (5 PM Saudi Time)
+- **Days:** Monday - Friday (market days)
+- **Manual Trigger:** Available in GitHub Actions tab
 
-Schedule: Daily at 2 PM UTC (5 PM Saudi Time)
-Days: Monday - Friday (market days)
-Manual Trigger: Available in GitHub Actions tab
+## 📧 Email Alerts
 
-📧 Email Alerts
 Receive notifications for:
+- ❌ Pipeline failures
+- ⚠️ API errors
+- 📊 Data quality issues
 
-❌ Pipeline failures
-⚠️ API errors
-📊 Data quality issues
+## 📈 Dashboard Features
 
-📈 Dashboard Features
+- **Real-time Data:** Latest stock prices and metrics
+- **Interactive Charts:** Candlestick charts, volume bars
+- **Stock Comparison:** Compare multiple stocks
+- **Historical Data:** View past performance
+- **Raw Data Access:** Download filtered datasets
 
-Real-time Data: Latest stock prices and metrics
-Interactive Charts: Candlestick charts, volume bars
-Stock Comparison: Compare multiple stocks
-Historical Data: View past performance
-Raw Data Access: Download filtered datasets
+## 🎯 Key Achievements
 
-🎯 Key Achievements
+- ✅ 100% automated data pipeline
+- ✅ Zero manual intervention required
+- ✅ Handles ~400 records daily
+- ✅ 99.9% uptime (GitHub Actions)
+- ✅ Real-time dashboard updates
+- ✅ Production-grade error handling
 
-✅ 100% automated data pipeline
-✅ Zero manual intervention required
-✅ Handles ~400 records daily
-✅ 99.9% uptime (GitHub Actions)
-✅ Real-time dashboard updates
-✅ Production-grade error handling
+## 📄 License
 
-📄 License
-👤 Author
-Zahoor Ishfaq
+This project is open source and available under the MIT License.
 
-LinkedIn:(https://www.linkedin.com/in/zahoor-ishfaq/)
-GitHub:  (https://github.com/Zahoor-ishfaq)
-Portfolio: www.zahoor-ishfaq.vercel.app
+## 👤 Author
 
-🙏 Acknowledgments
+**Zahoor Ishfaq**
 
-Alpha Vantage for providing free stock market data API
-Supabase for PostgreSQL hosting
-Streamlit for dashboard framework
+- LinkedIn: [https://www.linkedin.com/in/zahoor-ishfaq/](https://www.linkedin.com/in/zahoor-ishfaq/)
+- GitHub: [https://github.com/Zahoor-ishfaq](https://github.com/Zahoor-ishfaq)
+- Portfolio: [www.zahoor-ishfaq.vercel.app](https://www.zahoor-ishfaq.vercel.app)
 
+## 🙏 Acknowledgments
+
+- Alpha Vantage for providing free stock market data API
+- Supabase for PostgreSQL hosting
+- Streamlit for dashboard framework
+
+---
 
 ⭐ If you found this project helpful, please give it a star!
----
