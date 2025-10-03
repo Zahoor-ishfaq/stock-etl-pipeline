@@ -71,7 +71,7 @@ stock-etl-pipeline/
 │
 ├── src/
 │   ├── __init__.py
-│   ├── etl_pipeline.py            # Main ETL orchestrator
+│   ├── etl_pipeline.py            # Main ETL 
 │   ├── extract.py                 # API data extraction
 │   ├── transform.py               # Data transformation
 │   ├── load.py                    # Database loading
