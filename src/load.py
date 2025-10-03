@@ -11,28 +11,28 @@ def load_to_database(df):
         return
     
     try:
-        engine = create_engine(DATABASE_URL)
+        engine = create_engine(DATABASE_URL, pool_pre_ping=True)
         
         print(f"📊 Attempting to load {len(df)} records...")
         
         # Prepare data - only columns in schema
         df_to_load = df[['symbol', 'date', 'open', 'high', 'low', 'close', 'volume']].copy()
         
-        # Insert records one by one with conflict handling
         loaded_count = 0
         skipped_count = 0
         
-        with engine.connect() as conn:
+        # ✅ Use begin() instead of connect() to enable transactions
+        with engine.begin() as conn:
             for _, row in df_to_load.iterrows():
                 try:
-                    # Try to insert, skip if duplicate
                     query = text("""
                         INSERT INTO stock_data (symbol, date, open, high, low, close, volume)
                         VALUES (:symbol, :date, :open, :high, :low, :close, :volume)
                         ON CONFLICT (symbol, date) DO NOTHING
+                        RETURNING symbol
                     """)
                     
-                    conn.execute(query, {
+                    result = conn.execute(query, {
                         'symbol': row['symbol'],
                         'date': row['date'],
                         'open': float(row['open']),
@@ -41,16 +41,26 @@ def load_to_database(df):
                         'close': float(row['close']),
                         'volume': int(row['volume'])
                     })
-                    conn.commit()
-                    loaded_count += 1
+                    
+                    # Check if row was actually inserted
+                    if result.rowcount > 0:
+                        loaded_count += 1
+                    else:
+                        skipped_count += 1
                     
                 except Exception as e:
+                    print(f"⚠️  Error with row {row['symbol']} {row['date']}: {e}")
                     skipped_count += 1
                     continue
+        
+        # Transaction auto-commits when exiting the 'with begin()' block
         
         print(f"✓ Loaded {loaded_count} new records")
         if skipped_count > 0:
             print(f"⚠️  Skipped {skipped_count} duplicate records")
         
+        engine.dispose()
+        
     except Exception as e:
         print(f"❌ Error loading to database: {str(e)}")
+        raise

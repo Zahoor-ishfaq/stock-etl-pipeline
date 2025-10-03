@@ -7,8 +7,14 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
-DATABASE_URL = os.getenv('DATABASE_URL')
+# Get database URL from Streamlit secrets or environment
+try:
+    DATABASE_URL = st.secrets["DATABASE_URL"]
+except (KeyError, FileNotFoundError):
+    # Fallback to .env for local development
+    from dotenv import load_dotenv
+    load_dotenv()
+    DATABASE_URL = os.getenv('DATABASE_URL')
 
 # Page config
 st.set_page_config(
