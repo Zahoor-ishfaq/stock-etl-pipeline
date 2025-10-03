@@ -13,7 +13,7 @@ A fully automated ETL (Extract, Transform, Load) pipeline that fetches real-time
 
 ## 📊 Project Overview
 
-This project demonstrates a production-ready data pipeline that:
+This project demonstrates an automated data pipeline that:
 - Extracts stock data from Alpha Vantage API
 - Transforms and cleans data using pandas
 - Loads data into PostgreSQL database
