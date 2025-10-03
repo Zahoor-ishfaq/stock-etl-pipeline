@@ -8,7 +8,7 @@ A fully automated ETL (Extract, Transform, Load) pipeline that fetches real-time
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Automated-orange)
 
 ## 🔗 Live Demo
-- **Dashboard:** [View Live Dashboard](your-streamlit-link-here)
+- **Dashboard:** [View Live Dashboard](https://zahoor-ishfaq-stock-etl-pipeline-dashboardapp.streamlit.app/)
 - **Last Updated:** Automatically updates daily at 5 PM (Saudi Time)
 
 ## 📊 Project Overview
@@ -103,12 +103,6 @@ stock-etl-pipeline/
 - Alpha Vantage API key
 - Gmail account with app password
 
-### Setup Steps
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/stock-etl-pipeline.git
-cd stock-etl-pipeline
 🔄 ETL Pipeline Details
 Extract
 
@@ -168,33 +162,13 @@ Raw Data Access: Download filtered datasets
 ✅ Real-time dashboard updates
 ✅ Production-grade error handling
 
-🔒 Security
-
-API keys stored in GitHub Secrets
-Environment variables not committed
-Database credentials encrypted
-App passwords for email authentication
-
-📝 Future Enhancements
-
- Add more stock symbols
- Implement data quality checks
- Add technical indicators (RSI, MACD)
- Create prediction models
- Add data visualization improvements
- Implement logging to file
- Add unit tests
-
-🤝 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
 📄 License
-This project is licensed under the MIT License.
 👤 Author
-Your Name
+Zahoor Ishfaq
 
-LinkedIn: Your LinkedIn
-GitHub: @yourusername
-Portfolio: yourportfolio.com
+LinkedIn:(https://www.linkedin.com/in/zahoor-ishfaq/)
+GitHub:  (https://github.com/Zahoor-ishfaq)
+Portfolio: www.zahoor-ishfaq.vercel.app
 
 🙏 Acknowledgments
 
@@ -205,13 +179,3 @@ Streamlit for dashboard framework
 
 ⭐ If you found this project helpful, please give it a star!
 ---
-
-**Replace these placeholders:**
-- `yourusername` - Your GitHub username
-- `Your Name` - Your actual name
-- LinkedIn/Portfolio links
-- Streamlit dashboard link (after deployment)
-
----
-
-**Ready to push to GitHub? Let me know!**
