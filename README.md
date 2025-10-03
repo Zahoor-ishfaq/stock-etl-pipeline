@@ -178,6 +178,23 @@ This project is open source and available under the MIT License.
 - GitHub: [https://github.com/Zahoor-ishfaq](https://github.com/Zahoor-ishfaq)
 - Portfolio: [www.zahoor-ishfaq.vercel.app](https://www.zahoor-ishfaq.vercel.app)
 
+  ## ⚠️ Known Limitations
+
+Due to free-tier resource constraints, this project has the following limitations:
+
+### API Constraints (Alpha Vantage Free Tier)
+- **Rate Limit:** 5 calls/minute, 500 calls/day
+- **Data Delay:** 15-20 minute delayed data (not real-time)
+- **Stock Coverage:** Limited to 4 stocks due to rate limits
+- **Historical Depth:** ~100 days per initial fetch
+
+### Infrastructure Constraints
+- **Database Storage:** 500 MB limit (Supabase free tier)
+  - Current usage: ~50 MB
+  - Estimated capacity: 1-2 years of daily data
+- **Concurrent Users:** Limited database connections may cause slowdowns
+- **Dashboard Cold Start:** 5-10 second initial load after inactivity
+
 ## 🙏 Acknowledgments
 
 - Alpha Vantage for providing free stock market data API
