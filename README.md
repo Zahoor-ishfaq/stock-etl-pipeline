@@ -13,7 +13,7 @@ A fully automated ETL (Extract, Transform, Load) pipeline that fetches real-time
 
 ## 📊 Project Overview
 
-This project demonstrates a production-ready data engineering pipeline that:
+This project demonstrates a production-ready data pipeline that:
 - Extracts stock data from Alpha Vantage API
 - Transforms and cleans data using pandas
 - Loads data into PostgreSQL database
@@ -165,11 +165,7 @@ Receive notifications for:
 - ✅ 99.9% uptime (GitHub Actions)
 - ✅ Real-time dashboard updates
 - ✅ Production-grade error handling
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
+  
 ## 👤 Author
 
 **Zahoor Ishfaq**
