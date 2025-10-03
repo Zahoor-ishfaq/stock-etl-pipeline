@@ -57,9 +57,8 @@ This project demonstrates a production-ready data pipeline that:
 - ✅ **Database Storage** - Persistent storage with conflict handling
 - ✅ **Scheduled Runs** - Automated daily execution via GitHub Actions
 - ✅ **Email Alerts** - Notifications on pipeline failures
-- ✅ **Interactive Dashboard** - Real-time visualization with Streamlit
+- ✅ **Interactive Dashboard** - Visualization with Streamlit
 - ✅ **Error Handling** - Robust error management and logging
-- ✅ **Rate Limit Management** - Respects API rate limits
 
 ## 📁 Project Structure
 
@@ -164,7 +163,6 @@ Receive notifications for:
 - ✅ Handles ~400 records daily
 - ✅ 99.9% uptime (GitHub Actions)
 - ✅ Real-time dashboard updates
-- ✅ Production-grade error handling
   
 ## 👤 Author
 
@@ -190,12 +188,6 @@ Due to free-tier resource constraints, this project has the following limitation
   - Estimated capacity: 1-2 years of daily data
 - **Concurrent Users:** Limited database connections may cause slowdowns
 - **Dashboard Cold Start:** 5-10 second initial load after inactivity
-
-## 🙏 Acknowledgments
-
-- Alpha Vantage for providing free stock market data API
-- Supabase for PostgreSQL hosting
-- Streamlit for dashboard framework
 
 ---
 
