@@ -1,0 +1,29 @@
+name: Daily Stock ETL Pipeline
+
+on:
+  schedule:
+    - cron: '0 14 * * 1-5'  # 2 PM UTC, Mon-Fri (market hours)
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: Run ETL Pipeline
+      env:
+        ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      run: |
+        python src/etl_pipeline.py
